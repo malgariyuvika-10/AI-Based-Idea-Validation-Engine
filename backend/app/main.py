@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from app.api.idea_routes import router as idea_router
 from app.api.validation_routes import router as validation_router
+from app.api.report_routes import router as report_router
 
 app = FastAPI(
     title="AI Idea Validation Engine",
@@ -20,6 +21,11 @@ app.include_router(
     tags=["Validation"]
 )
 
+app.include_router(
+    report_router,
+    prefix="/api",
+    tags=["Reports"]
+)
 
 @app.get("/")
 def home():
