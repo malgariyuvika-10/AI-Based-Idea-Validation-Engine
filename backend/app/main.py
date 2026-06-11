@@ -3,6 +3,11 @@ from fastapi import FastAPI
 from app.api.idea_routes import router as idea_router
 from app.api.validation_routes import router as validation_router
 from app.api.report_routes import router as report_router
+from app.database.database import engine
+from app.database.database import Base
+from app.models.idea_model import Idea
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="AI Idea Validation Engine",
