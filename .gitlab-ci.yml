@@ -28,4 +28,10 @@ security:
 test:
   stage: test
   script:
-    - pytest --cov=. --cov-report=term-missing
+    - export PYTHONPATH=$CI_PROJECT_DIR
+    - pytest tests --cov=backend --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
