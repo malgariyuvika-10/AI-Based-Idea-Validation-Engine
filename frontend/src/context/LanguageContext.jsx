@@ -1,0 +1,582 @@
+import { createContext, useEffect, useMemo, useState } from "react";
+
+export const LanguageContext = createContext();
+
+const en = {
+  label: "English",
+  nav: {
+    home: "Home",
+    validate: "Validate Idea",
+    dashboard: "Dashboard",
+    reports: "Reports",
+    cta: "Try Now",
+  },
+  common: {
+    back: "Back",
+    notAvailable: "Not available",
+    language: "Language",
+    mixed: "mixed",
+    gap: "Gap",
+  },
+  home: {
+    titleTop: "Validate Your",
+    titleAccent: "Startup Vision",
+    subtitle:
+      "Stop guessing. Use our local AI engine to analyze market trends, feasibility, and risk for your business idea.",
+    validate: "Validate My Idea",
+    howItWorks: "How it Works",
+    featuresTitle: "Powerful AI Analysis",
+    featuresSubtitle:
+      "Our system uses specialized agents to evaluate your concept in your preferred language.",
+    marketTitle: "Market Intelligence",
+    marketText:
+      "Analyze market size, competitor landscape, and customer demand signals.",
+    feasibilityTitle: "Feasibility Study",
+    feasibilityText:
+      "Review technical requirements, financial viability, and operational needs.",
+    riskTitle: "Risk Mitigation",
+    riskText:
+      "Identify competition, execution risks, and possible improvement areas early.",
+    ctaTitle: "Ready to see if your idea scales?",
+    ctaText:
+      "Build faster with offline AI validation and multilingual startup insights.",
+    getStarted: "Get Started",
+  },
+  submit: {
+    title: "Validate Your Startup Idea",
+    ideaName: "Idea name",
+    description: "Describe your idea in detail...",
+    targetAudience: "Target audience",
+    analyzing: "Analyzing Idea...",
+    validateNow: "Validate Now",
+    success: "Idea submitted successfully!",
+    failure: "Failed to validate idea.",
+    backendHint: "Make sure your backend server is running on port 5000.",
+    industries: {
+      Technology: "Technology",
+      Healthcare: "Healthcare",
+      Education: "Education",
+      Finance: "Finance",
+      "E-commerce": "E-commerce",
+      SaaS: "SaaS",
+      Other: "Other",
+    },
+    revenueModels: {
+      "One-time Purchase": "One-time Purchase",
+      "Marketplace Commission": "Marketplace Commission",
+      Advertising: "Advertising",
+      Services: "Services",
+    },
+  },
+  dashboard: {
+    title: "Idea Dashboard",
+    currentIdea: "Current idea: {{title}}",
+    empty: "Submit an idea to populate your dashboard.",
+    overview: "Overview",
+    results: "Results",
+    successPrediction: "Success Prediction",
+    validationBreakdown: "Validation Breakdown",
+    growthSignals: "Growth Signals",
+  },
+  results: {
+    title: "Validation Results",
+    idea: "Idea",
+    aiIdeaScore: "AI Idea Score",
+    market: "Market",
+    feasibility: "Feasibility",
+    innovation: "Innovation",
+    risk: "Risk",
+    scalability: "Scalability",
+    scale: "Scale",
+    success: "Success",
+    analysisScores: "Analysis Scores",
+    successPrediction: "Success Prediction",
+    potential: "potential",
+    competitorAnalysis: "Competitor Analysis",
+    aiSuggestions: "AI Suggestions",
+    pitchGenerator: "Pitch Generator",
+    noIdea: "No idea validated yet. Go to the Submit page to start!",
+    swot: {
+      strengths: "Strengths",
+      weaknesses: "Weaknesses",
+      opportunities: "Opportunities",
+      threats: "Threats",
+    },
+  },
+  reports: {
+    title: "PDF Report",
+    subtitle: "Generate a printable validation report for your latest idea.",
+    download: "Download PDF",
+    preview: "Report Preview",
+    empty: "No report available yet. Submit and validate an idea first.",
+    reportTitle: "AI Idea Validation Report",
+    audience: "Audience",
+    industry: "Industry",
+    revenueModel: "Revenue Model",
+    scoring: "AI Idea Scoring",
+    overall: "Overall",
+    swotAnalysis: "SWOT Analysis",
+    aiSuggestions: "AI Suggestions",
+    pitch: "Pitch",
+  },
+  cards: {
+    validationScore: "Validation Score",
+    riskLevel: "Risk Level",
+    marketAnalysis: "Market Analysis",
+  },
+  about: {
+    title: "About",
+    text: "AI-powered startup idea validation platform.",
+  },
+  notFound: {
+    page: "Page not found",
+    goHome: "Go Home",
+  },
+  footer: "© 2026 Startup Idea Validator",
+};
+
+const translations = {
+  en,
+  hi: {
+    ...en,
+    label: "हिन्दी",
+    nav: {
+      home: "होम",
+      validate: "आइडिया जांचें",
+      dashboard: "डैशबोर्ड",
+      reports: "रिपोर्ट",
+      cta: "शुरू करें",
+    },
+    common: {
+      back: "वापस",
+      notAvailable: "उपलब्ध नहीं",
+      language: "भाषा",
+      mixed: "मिश्रित",
+      gap: "अंतर",
+    },
+    home: {
+      titleTop: "अपने",
+      titleAccent: "स्टार्टअप विजन को जांचें",
+      subtitle:
+        "अनुमान लगाना बंद करें। अपने बिजनेस आइडिया के बाजार रुझान, व्यवहार्यता और जोखिम का विश्लेषण स्थानीय AI इंजन से करें।",
+      validate: "मेरा आइडिया जांचें",
+      howItWorks: "यह कैसे काम करता है",
+      featuresTitle: "शक्तिशाली AI विश्लेषण",
+      featuresSubtitle:
+        "हमारा सिस्टम आपकी पसंद की भाषा में आपके कॉन्सेप्ट का मूल्यांकन करने के लिए विशेष एजेंट इस्तेमाल करता है।",
+      marketTitle: "मार्केट इंटेलिजेंस",
+      marketText:
+        "बाजार आकार, प्रतिस्पर्धी परिदृश्य और ग्राहक मांग संकेतों का विश्लेषण करें।",
+      feasibilityTitle: "व्यवहार्यता अध्ययन",
+      feasibilityText:
+        "तकनीकी जरूरतों, वित्तीय व्यवहार्यता और संचालन आवश्यकताओं की समीक्षा करें।",
+      riskTitle: "जोखिम कम करना",
+      riskText:
+        "प्रतिस्पर्धा, निष्पादन जोखिम और सुधार के अवसरों को जल्दी पहचानें।",
+      ctaTitle: "क्या आपका आइडिया स्केल कर सकता है?",
+      ctaText:
+        "ऑफलाइन AI वैलिडेशन और बहुभाषी स्टार्टअप इनसाइट्स के साथ तेजी से आगे बढ़ें।",
+      getStarted: "शुरू करें",
+    },
+    submit: {
+      ...en.submit,
+      title: "अपना स्टार्टअप आइडिया जांचें",
+      ideaName: "आइडिया का नाम",
+      description: "अपने आइडिया को विस्तार से लिखें...",
+      targetAudience: "लक्षित ग्राहक",
+      analyzing: "आइडिया का विश्लेषण हो रहा है...",
+      validateNow: "अभी जांचें",
+      success: "आइडिया सफलतापूर्वक सबमिट हुआ!",
+      failure: "आइडिया वैलिडेट नहीं हो सका।",
+      backendHint: "सुनिश्चित करें कि बैकएंड सर्वर पोर्ट 5000 पर चल रहा है।",
+      industries: {
+        Technology: "टेक्नोलॉजी",
+        Healthcare: "हेल्थकेयर",
+        Education: "शिक्षा",
+        Finance: "फाइनेंस",
+        "E-commerce": "ई-कॉमर्स",
+        SaaS: "SaaS",
+        Other: "अन्य",
+      },
+      revenueModels: {
+        "One-time Purchase": "एक बार खरीद",
+        "Marketplace Commission": "मार्केटप्लेस कमीशन",
+        Advertising: "विज्ञापन",
+        Services: "सेवाएं",
+      },
+    },
+    dashboard: {
+      title: "आइडिया डैशबोर्ड",
+      currentIdea: "वर्तमान आइडिया: {{title}}",
+      empty: "डैशबोर्ड भरने के लिए एक आइडिया सबमिट करें।",
+      overview: "ओवरव्यू",
+      results: "परिणाम",
+      successPrediction: "सफलता अनुमान",
+      validationBreakdown: "वैलिडेशन विवरण",
+      growthSignals: "विकास संकेत",
+    },
+    results: {
+      ...en.results,
+      title: "वैलिडेशन परिणाम",
+      idea: "आइडिया",
+      aiIdeaScore: "AI आइडिया स्कोर",
+      market: "मार्केट",
+      feasibility: "व्यवहार्यता",
+      innovation: "नवाचार",
+      risk: "जोखिम",
+      scalability: "स्केलेबिलिटी",
+      scale: "स्केल",
+      success: "सफलता",
+      analysisScores: "विश्लेषण स्कोर",
+      successPrediction: "सफलता अनुमान",
+      potential: "संभावना",
+      competitorAnalysis: "प्रतिस्पर्धी विश्लेषण",
+      aiSuggestions: "AI सुझाव",
+      pitchGenerator: "पिच जेनरेटर",
+      noIdea: "अभी कोई आइडिया वैलिडेट नहीं हुआ। शुरू करने के लिए सबमिट पेज पर जाएं!",
+      swot: {
+        strengths: "ताकत",
+        weaknesses: "कमजोरियां",
+        opportunities: "अवसर",
+        threats: "खतरे",
+      },
+    },
+    reports: {
+      ...en.reports,
+      title: "PDF रिपोर्ट",
+      subtitle: "अपने नवीनतम आइडिया के लिए प्रिंट करने योग्य वैलिडेशन रिपोर्ट बनाएं।",
+      download: "PDF डाउनलोड करें",
+      preview: "रिपोर्ट प्रीव्यू",
+      empty: "अभी कोई रिपोर्ट उपलब्ध नहीं है। पहले आइडिया सबमिट और वैलिडेट करें।",
+      reportTitle: "AI आइडिया वैलिडेशन रिपोर्ट",
+      audience: "ऑडियंस",
+      industry: "इंडस्ट्री",
+      revenueModel: "रेवेन्यू मॉडल",
+      scoring: "AI आइडिया स्कोरिंग",
+      overall: "कुल",
+      swotAnalysis: "SWOT विश्लेषण",
+      aiSuggestions: "AI सुझाव",
+      pitch: "पिच",
+    },
+    cards: {
+      validationScore: "वैलिडेशन स्कोर",
+      riskLevel: "जोखिम स्तर",
+      marketAnalysis: "मार्केट विश्लेषण",
+    },
+    about: {
+      title: "परिचय",
+      text: "AI-संचालित स्टार्टअप आइडिया वैलिडेशन प्लेटफॉर्म।",
+    },
+    notFound: {
+      page: "पेज नहीं मिला",
+      goHome: "होम पर जाएं",
+    },
+    footer: "© 2026 स्टार्टअप आइडिया वैलिडेटर",
+  },
+  te: {
+    ...en,
+    label: "తెలుగు",
+    nav: {
+      home: "హోమ్",
+      validate: "ఆలోచనను ధృవీకరించండి",
+      dashboard: "డాష్‌బోర్డ్",
+      reports: "రిపోర్టులు",
+      cta: "ప్రారంభించండి",
+    },
+    common: {
+      back: "వెనక్కి",
+      notAvailable: "అందుబాటులో లేదు",
+      language: "భాష",
+      mixed: "మిశ్రమం",
+      gap: "గ్యాప్",
+    },
+    home: {
+      titleTop: "మీ",
+      titleAccent: "స్టార్టప్ విజన్‌ను ధృవీకరించండి",
+      subtitle:
+        "ఊహించడం ఆపండి. మీ వ్యాపార ఆలోచనలో మార్కెట్ ధోరణులు, సాధ్యత, ప్రమాదాలను స్థానిక AI ఇంజిన్‌తో విశ్లేషించండి.",
+      validate: "నా ఆలోచనను ధృవీకరించండి",
+      howItWorks: "ఇది ఎలా పనిచేస్తుంది",
+      featuresTitle: "శక్తివంతమైన AI విశ్లేషణ",
+      featuresSubtitle:
+        "మీకు ఇష్టమైన భాషలో మీ కాన్సెప్ట్‌ను అంచనా వేయడానికి మా సిస్టమ్ ప్రత్యేక ఏజెంట్లను ఉపయోగిస్తుంది.",
+      marketTitle: "మార్కెట్ అవగాహన",
+      marketText:
+        "మార్కెట్ పరిమాణం, పోటీదారుల పరిస్థితి, కస్టమర్ డిమాండ్ సంకేతాలను విశ్లేషించండి.",
+      feasibilityTitle: "సాధ్యత అధ్యయనం",
+      feasibilityText:
+        "సాంకేతిక అవసరాలు, ఆర్థిక సాధ్యత, ఆపరేషనల్ అవసరాలను సమీక్షించండి.",
+      riskTitle: "ప్రమాద తగ్గింపు",
+      riskText:
+        "పోటీ, అమలు ప్రమాదాలు, మెరుగుదల అవకాశాలను ముందుగానే గుర్తించండి.",
+      ctaTitle: "మీ ఆలోచన స్కేల్ అవుతుందో చూడాలా?",
+      ctaText:
+        "ఆఫ్‌లైన్ AI ధృవీకరణ మరియు బహుభాషా స్టార్టప్ అంతర్దృష్టులతో వేగంగా ముందుకు సాగండి.",
+      getStarted: "ప్రారంభించండి",
+    },
+    submit: {
+      ...en.submit,
+      title: "మీ స్టార్టప్ ఆలోచనను ధృవీకరించండి",
+      ideaName: "ఆలోచన పేరు",
+      description: "మీ ఆలోచనను వివరంగా వ్రాయండి...",
+      targetAudience: "లక్ష్య ప్రేక్షకులు",
+      analyzing: "ఆలోచనను విశ్లేషిస్తున్నాం...",
+      validateNow: "ఇప్పుడే ధృవీకరించండి",
+      success: "ఆలోచన విజయవంతంగా సమర్పించబడింది!",
+      failure: "ఆలోచనను ధృవీకరించలేకపోయాం.",
+      backendHint: "మీ బ్యాకెండ్ సర్వర్ పోర్ట్ 5000లో నడుస్తోందని నిర్ధారించుకోండి.",
+      industries: {
+        Technology: "టెక్నాలజీ",
+        Healthcare: "హెల్త్‌కేర్",
+        Education: "విద్య",
+        Finance: "ఫైనాన్స్",
+        "E-commerce": "ఈ-కామర్స్",
+        SaaS: "SaaS",
+        Other: "ఇతర",
+      },
+      revenueModels: {
+        "One-time Purchase": "ఒక్కసారి కొనుగోలు",
+        "Marketplace Commission": "మార్కెట్‌ప్లేస్ కమిషన్",
+        Advertising: "ప్రకటనలు",
+        Services: "సేవలు",
+      },
+    },
+    dashboard: {
+      title: "ఆలోచన డాష్‌బోర్డ్",
+      currentIdea: "ప్రస్తుత ఆలోచన: {{title}}",
+      empty: "మీ డాష్‌బోర్డ్‌ను నింపడానికి ఒక ఆలోచనను సమర్పించండి.",
+      overview: "అవలోకనం",
+      results: "ఫలితాలు",
+      successPrediction: "విజయ అంచనా",
+      validationBreakdown: "ధృవీకరణ వివరాలు",
+      growthSignals: "వృద్ధి సంకేతాలు",
+    },
+    results: {
+      ...en.results,
+      title: "ధృవీకరణ ఫలితాలు",
+      idea: "ఆలోచన",
+      aiIdeaScore: "AI ఆలోచన స్కోర్",
+      market: "మార్కెట్",
+      feasibility: "సాధ్యత",
+      innovation: "ఆవిష్కరణ",
+      risk: "ప్రమాదం",
+      scalability: "స్కేలబిలిటీ",
+      scale: "స్కేల్",
+      success: "విజయం",
+      analysisScores: "విశ్లేషణ స్కోర్లు",
+      successPrediction: "విజయ అంచనా",
+      potential: "సామర్థ్యం",
+      competitorAnalysis: "పోటీదారుల విశ్లేషణ",
+      aiSuggestions: "AI సూచనలు",
+      pitchGenerator: "పిచ్ జనరేటర్",
+      noIdea: "ఇంకా ఏ ఆలోచన ధృవీకరించబడలేదు. ప్రారంభించడానికి సమర్పణ పేజీకి వెళ్లండి!",
+      swot: {
+        strengths: "బలాలు",
+        weaknesses: "బలహీనతలు",
+        opportunities: "అవకాశాలు",
+        threats: "ముప్పులు",
+      },
+    },
+    reports: {
+      ...en.reports,
+      title: "PDF రిపోర్ట్",
+      subtitle: "మీ తాజా ఆలోచన కోసం ముద్రించగల ధృవీకరణ రిపోర్ట్ రూపొందించండి.",
+      download: "PDF డౌన్‌లోడ్",
+      preview: "రిపోర్ట్ ప్రివ్యూ",
+      empty: "ఇంకా రిపోర్ట్ అందుబాటులో లేదు. ముందు ఆలోచనను సమర్పించి ధృవీకరించండి.",
+      reportTitle: "AI ఆలోచన ధృవీకరణ రిపోర్ట్",
+      audience: "ప్రేక్షకులు",
+      industry: "ఇండస్ట్రీ",
+      revenueModel: "ఆదాయ మోడల్",
+      scoring: "AI ఆలోచన స్కోరింగ్",
+      overall: "మొత్తం",
+      swotAnalysis: "SWOT విశ్లేషణ",
+      aiSuggestions: "AI సూచనలు",
+      pitch: "పిచ్",
+    },
+    cards: {
+      validationScore: "ధృవీకరణ స్కోర్",
+      riskLevel: "ప్రమాద స్థాయి",
+      marketAnalysis: "మార్కెట్ విశ్లేషణ",
+    },
+    about: {
+      title: "గురించి",
+      text: "AI ఆధారిత స్టార్టప్ ఆలోచన ధృవీకరణ ప్లాట్‌ఫారమ్.",
+    },
+    notFound: {
+      page: "పేజీ కనబడలేదు",
+      goHome: "హోమ్‌కు వెళ్లండి",
+    },
+    footer: "© 2026 స్టార్టప్ ఆలోచన ధృవీకరణ",
+  },
+  kn: {
+    ...en,
+    label: "ಕನ್ನಡ",
+    nav: {
+      home: "ಹೋಮ್",
+      validate: "ಐಡಿಯಾವನ್ನು ಪರಿಶೀಲಿಸಿ",
+      dashboard: "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      reports: "ವರದಿಗಳು",
+      cta: "ಪ್ರಾರಂಭಿಸಿ",
+    },
+    common: {
+      back: "ಹಿಂದೆ",
+      notAvailable: "ಲಭ್ಯವಿಲ್ಲ",
+      language: "ಭಾಷೆ",
+      mixed: "ಮಿಶ್ರ",
+      gap: "ಅಂತರ",
+    },
+    home: {
+      titleTop: "ನಿಮ್ಮ",
+      titleAccent: "ಸ್ಟಾರ್ಟಪ್ ದೃಷ್ಟಿಯನ್ನು ಪರಿಶೀಲಿಸಿ",
+      subtitle:
+        "ಊಹಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ. ನಿಮ್ಮ ವ್ಯವಹಾರ ಐಡಿಯಾದ ಮಾರುಕಟ್ಟೆ ಪ್ರವೃತ್ತಿ, ಸಾಧ್ಯತೆ ಮತ್ತು ಅಪಾಯವನ್ನು ಸ್ಥಳೀಯ AI ಎಂಜಿನ್ ಬಳಸಿ ವಿಶ್ಲೇಷಿಸಿ.",
+      validate: "ನನ್ನ ಐಡಿಯಾ ಪರಿಶೀಲಿಸಿ",
+      howItWorks: "ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ",
+      featuresTitle: "ಶಕ್ತಿಶಾಲಿ AI ವಿಶ್ಲೇಷಣೆ",
+      featuresSubtitle:
+        "ನಿಮ್ಮ ಆಯ್ಕೆಯ ಭಾಷೆಯಲ್ಲಿ ನಿಮ್ಮ ಕಲ್ಪನೆಯನ್ನು ಮೌಲ್ಯಮಾಪನ ಮಾಡಲು ನಮ್ಮ ವ್ಯವಸ್ಥೆ ವಿಶೇಷ ಏಜೆಂಟ್‌ಗಳನ್ನು ಬಳಸುತ್ತದೆ.",
+      marketTitle: "ಮಾರುಕಟ್ಟೆ ಅರಿವು",
+      marketText:
+        "ಮಾರುಕಟ್ಟೆ ಗಾತ್ರ, ಸ್ಪರ್ಧಿಗಳ ಸ್ಥಿತಿ ಮತ್ತು ಗ್ರಾಹಕ ಬೇಡಿಕೆಯ ಸೂಚನೆಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಿ.",
+      feasibilityTitle: "ಸಾಧ್ಯತಾ ಅಧ್ಯಯನ",
+      feasibilityText:
+        "ತಾಂತ್ರಿಕ ಅಗತ್ಯಗಳು, ಆರ್ಥಿಕ ಸಾಧ್ಯತೆ ಮತ್ತು ಕಾರ್ಯಾಚರಣಾ ಅವಶ್ಯಕತೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.",
+      riskTitle: "ಅಪಾಯ ನಿಯಂತ್ರಣ",
+      riskText:
+        "ಸ್ಪರ್ಧೆ, ಅನುಷ್ಠಾನ ಅಪಾಯಗಳು ಮತ್ತು ಸುಧಾರಣೆ ಅವಕಾಶಗಳನ್ನು ಬೇಗ ಗುರುತಿಸಿ.",
+      ctaTitle: "ನಿಮ್ಮ ಐಡಿಯಾ ಸ್ಕೇಲ್ ಆಗಬಹುದೇ?",
+      ctaText:
+        "ಆಫ್‌ಲೈನ್ AI ಪರಿಶೀಲನೆ ಮತ್ತು ಬಹುಭಾಷಾ ಸ್ಟಾರ್ಟಪ್ ಒಳನೋಟಗಳೊಂದಿಗೆ ವೇಗವಾಗಿ ಮುಂದುವರಿಯಿರಿ.",
+      getStarted: "ಪ್ರಾರಂಭಿಸಿ",
+    },
+    submit: {
+      ...en.submit,
+      title: "ನಿಮ್ಮ ಸ್ಟಾರ್ಟಪ್ ಐಡಿಯಾವನ್ನು ಪರಿಶೀಲಿಸಿ",
+      ideaName: "ಐಡಿಯಾ ಹೆಸರು",
+      description: "ನಿಮ್ಮ ಐಡಿಯಾವನ್ನು ವಿವರವಾಗಿ ಬರೆಯಿರಿ...",
+      targetAudience: "ಲಕ್ಷ್ಯ ಪ್ರೇಕ್ಷಕರು",
+      analyzing: "ಐಡಿಯಾವನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...",
+      validateNow: "ಈಗ ಪರಿಶೀಲಿಸಿ",
+      success: "ಐಡಿಯಾ ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!",
+      failure: "ಐಡಿಯಾವನ್ನು ಪರಿಶೀಲಿಸಲು ವಿಫಲವಾಗಿದೆ.",
+      backendHint: "ನಿಮ್ಮ ಬ್ಯಾಕೆಂಡ್ ಸರ್ವರ್ ಪೋರ್ಟ್ 5000ರಲ್ಲಿ ಚಾಲನೆಯಲ್ಲಿದೆ ಎಂದು ಖಚಿತಪಡಿಸಿ.",
+      industries: {
+        Technology: "ಟೆಕ್ನಾಲಜಿ",
+        Healthcare: "ಹೆಲ್ತ್‌ಕೇರ್",
+        Education: "ಶಿಕ್ಷಣ",
+        Finance: "ಫೈನಾನ್ಸ್",
+        "E-commerce": "ಇ-ಕಾಮರ್ಸ್",
+        SaaS: "SaaS",
+        Other: "ಇತರೆ",
+      },
+      revenueModels: {
+        "One-time Purchase": "ಒಮ್ಮೆ ಖರೀದಿ",
+        "Marketplace Commission": "ಮಾರ್ಕೆಟ್‌ಪ್ಲೇಸ್ ಕಮಿಷನ್",
+        Advertising: "ಜಾಹೀರಾತು",
+        Services: "ಸೇವೆಗಳು",
+      },
+    },
+    dashboard: {
+      title: "ಐಡಿಯಾ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      currentIdea: "ಪ್ರಸ್ತುತ ಐಡಿಯಾ: {{title}}",
+      empty: "ನಿಮ್ಮ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ತುಂಬಿಸಲು ಒಂದು ಐಡಿಯಾ ಸಲ್ಲಿಸಿ.",
+      overview: "ಅವಲೋಕನ",
+      results: "ಫಲಿತಾಂಶಗಳು",
+      successPrediction: "ಯಶಸ್ಸಿನ ಅಂದಾಜು",
+      validationBreakdown: "ಪರಿಶೀಲನೆ ವಿವರ",
+      growthSignals: "ಬೆಳವಣಿಗೆ ಸೂಚನೆಗಳು",
+    },
+    results: {
+      ...en.results,
+      title: "ಪರಿಶೀಲನೆ ಫಲಿತಾಂಶಗಳು",
+      idea: "ಐಡಿಯಾ",
+      aiIdeaScore: "AI ಐಡಿಯಾ ಸ್ಕೋರ್",
+      market: "ಮಾರುಕಟ್ಟೆ",
+      feasibility: "ಸಾಧ್ಯತೆ",
+      innovation: "ನವೀನತೆ",
+      risk: "ಅಪಾಯ",
+      scalability: "ಸ್ಕೇಲಬಿಲಿಟಿ",
+      scale: "ಸ್ಕೇಲ್",
+      success: "ಯಶಸ್ಸು",
+      analysisScores: "ವಿಶ್ಲೇಷಣೆ ಸ್ಕೋರ್‌ಗಳು",
+      successPrediction: "ಯಶಸ್ಸಿನ ಅಂದಾಜು",
+      potential: "ಸಾಮರ್ಥ್ಯ",
+      competitorAnalysis: "ಸ್ಪರ್ಧಿ ವಿಶ್ಲೇಷಣೆ",
+      aiSuggestions: "AI ಸಲಹೆಗಳು",
+      pitchGenerator: "ಪಿಚ್ ಜನರೇಟರ್",
+      noIdea: "ಇನ್ನೂ ಯಾವುದೇ ಐಡಿಯಾ ಪರಿಶೀಲನೆಯಾಗಿಲ್ಲ. ಪ್ರಾರಂಭಿಸಲು ಸಲ್ಲಿಕೆ ಪುಟಕ್ಕೆ ಹೋಗಿ!",
+      swot: {
+        strengths: "ಬಲಗಳು",
+        weaknesses: "ದುರ್ಬಲತೆಗಳು",
+        opportunities: "ಅವಕಾಶಗಳು",
+        threats: "ಅಪಾಯಗಳು",
+      },
+    },
+    reports: {
+      ...en.reports,
+      title: "PDF ವರದಿ",
+      subtitle: "ನಿಮ್ಮ ಇತ್ತೀಚಿನ ಐಡಿಯಾಗಾಗಿ ಮುದ್ರಿಸಬಹುದಾದ ಪರಿಶೀಲನೆ ವರದಿ ರಚಿಸಿ.",
+      download: "PDF ಡೌನ್‌ಲೋಡ್",
+      preview: "ವರದಿ ಪೂರ್ವವೀಕ್ಷಣೆ",
+      empty: "ಇನ್ನೂ ಯಾವುದೇ ವರದಿ ಲಭ್ಯವಿಲ್ಲ. ಮೊದಲು ಐಡಿಯಾವನ್ನು ಸಲ್ಲಿಸಿ ಪರಿಶೀಲಿಸಿ.",
+      reportTitle: "AI ಐಡಿಯಾ ಪರಿಶೀಲನೆ ವರದಿ",
+      audience: "ಪ್ರೇಕ್ಷಕರು",
+      industry: "ಉದ್ಯಮ",
+      revenueModel: "ಆದಾಯ ಮಾದರಿ",
+      scoring: "AI ಐಡಿಯಾ ಸ್ಕೋರಿಂಗ್",
+      overall: "ಒಟ್ಟು",
+      swotAnalysis: "SWOT ವಿಶ್ಲೇಷಣೆ",
+      aiSuggestions: "AI ಸಲಹೆಗಳು",
+      pitch: "ಪಿಚ್",
+    },
+    cards: {
+      validationScore: "ಪರಿಶೀಲನೆ ಸ್ಕೋರ್",
+      riskLevel: "ಅಪಾಯ ಮಟ್ಟ",
+      marketAnalysis: "ಮಾರುಕಟ್ಟೆ ವಿಶ್ಲೇಷಣೆ",
+    },
+    about: {
+      title: "ಬಗ್ಗೆ",
+      text: "AI ಚಾಲಿತ ಸ್ಟಾರ್ಟಪ್ ಐಡಿಯಾ ಪರಿಶೀಲನೆ ವೇದಿಕೆ.",
+    },
+    notFound: {
+      page: "ಪುಟ ಕಂಡುಬಂದಿಲ್ಲ",
+      goHome: "ಹೋಮ್‌ಗೆ ಹೋಗಿ",
+    },
+    footer: "© 2026 ಸ್ಟಾರ್ಟಪ್ ಐಡಿಯಾ ಪರಿಶೀಲಕ",
+  },
+};
+
+export const translateTemplate = (template, values = {}) =>
+  Object.entries(values).reduce(
+    (text, [key, value]) => text.replace(`{{${key}}}`, value),
+    template
+  );
+
+export const LanguageProvider = ({ children }) => {
+  const [language, setLanguage] = useState(
+    () => localStorage.getItem("appLanguage") || "en"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("appLanguage", language);
+    document.documentElement.lang = language;
+  }, [language]);
+
+  const value = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      languages: translations,
+      t: translations[language] || translations.en,
+      format: translateTemplate,
+    }),
+    [language]
+  );
+
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};

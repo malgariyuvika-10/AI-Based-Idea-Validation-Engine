@@ -1,7 +1,12 @@
+import { useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
+
 const Footer = () => {
+  const { t } = useContext(LanguageContext);
+
   return (
     <footer className="bg-gray-800 text-white text-center py-4">
-      © 2026 Startup Idea Validator
+      {t.footer}
     </footer>
   );
 };

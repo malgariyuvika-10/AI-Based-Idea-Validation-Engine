@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { submitIdea } from "../services/ideaService";
 import { IdeaContext } from "../context/IdeaContext";
+import { LanguageContext } from "../context/LanguageContext";
 import MainLayout from "../layouts/MainLayout";
 
 const SubmitIdea = () => {
@@ -14,7 +15,10 @@ const SubmitIdea = () => {
   });
   const [loading, setLoading] = useState(false);
   const { setIdea } = useContext(IdeaContext);
+  const { t } = useContext(LanguageContext);
   const navigate = useNavigate();
+  const industries = Object.keys(t.submit.industries);
+  const revenueModels = Object.keys(t.submit.revenueModels);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,11 +36,12 @@ const SubmitIdea = () => {
       console.log("Success:", result);
       setIdea(result);
       
-      alert("Idea submitted successfully!");
+      alert(t.submit.success);
       navigate("/results"); // Redirect to results page
     } catch (error) {
       console.error("Submission Error:", error);
-      alert("Failed to submit idea. Make sure your backend server is running on port 5000.");
+      const message = error.response?.data?.detail || t.submit.backendHint;
+      alert(`${t.submit.failure} ${message}`);
     } finally {
       setLoading(false);
     }
@@ -46,14 +51,14 @@ const SubmitIdea = () => {
     <MainLayout>
       <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">
-          Validate Your Startup Idea
+          {t.submit.title}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             className="border p-3 w-full rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
             name="title"
-            placeholder="Idea name"
+            placeholder={t.submit.ideaName}
             value={formData.title}
             onChange={handleChange}
             disabled={loading}
@@ -62,7 +67,7 @@ const SubmitIdea = () => {
           <textarea
             className="border p-3 w-full rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
             rows="6"
-            placeholder="Describe your idea in detail..."
+            placeholder={t.submit.description}
             name="description"
             value={formData.description}
             onChange={handleChange}
@@ -72,7 +77,7 @@ const SubmitIdea = () => {
           <input
             className="border p-3 w-full rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
             name="target_audience"
-            placeholder="Target audience"
+            placeholder={t.submit.targetAudience}
             value={formData.target_audience}
             onChange={handleChange}
             disabled={loading}
@@ -86,13 +91,11 @@ const SubmitIdea = () => {
               onChange={handleChange}
               disabled={loading}
             >
-              <option>Technology</option>
-              <option>Healthcare</option>
-              <option>Education</option>
-              <option>Finance</option>
-              <option>E-commerce</option>
-              <option>SaaS</option>
-              <option>Other</option>
+              {industries.map((industry) => (
+                <option key={industry} value={industry}>
+                  {t.submit.industries[industry]}
+                </option>
+              ))}
             </select>
 
             <select
@@ -102,10 +105,11 @@ const SubmitIdea = () => {
               onChange={handleChange}
               disabled={loading}
             >
-              <option>One-time Purchase</option>
-              <option>Marketplace Commission</option>
-              <option>Advertising</option>
-              <option>Services</option>
+              {revenueModels.map((model) => (
+                <option key={model} value={model}>
+                  {t.submit.revenueModels[model]}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -114,7 +118,7 @@ const SubmitIdea = () => {
             disabled={loading || !formData.title.trim() || !formData.description.trim() || !formData.target_audience.trim()}
             className={`w-full bg-blue-600 text-white px-4 py-3 rounded font-bold hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {loading ? "Analyzing Idea..." : "Validate Now"}
+            {loading ? t.submit.analyzing : t.submit.validateNow}
           </button>
         </form>
       </div>
