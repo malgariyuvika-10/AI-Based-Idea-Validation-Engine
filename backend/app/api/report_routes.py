@@ -41,11 +41,11 @@ def generate_report_by_id(idea_id: int):
         raise HTTPException(status_code=404, detail="Idea not found")
 
     idea_data = IdeaRequest(
-        title=idea.title,
-        description=idea.description,
-        target_audience=idea.target_audience,
-        industry=idea.industry,
-        revenue_model=idea.revenue_model
+    title=str(idea.title),
+    description=str(idea.description),
+    target_audience=str(idea.target_audience),
+    industry=str(idea.industry),
+    revenue_model=str(idea.revenue_model)
     )
 
     return generate_report_direct(idea_data)

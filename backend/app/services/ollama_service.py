@@ -2,6 +2,7 @@ import json
 import os
 from typing import Any
 from urllib import error, request
+from urllib.parse import urlparse
 
 
 class OllamaError(RuntimeError):
@@ -27,6 +28,12 @@ class OllamaService:
         }
 
         data = json.dumps(payload).encode("utf-8")
+
+        parsed_url = urlparse(self.base_url)
+
+        if parsed_url.scheme not in ("http", "https"):
+            raise ValueError("Only HTTP/HTTPS URLs are allowed")
+
         req = request.Request(
             f"{self.base_url}/api/generate",
             data=data,
@@ -35,22 +42,32 @@ class OllamaService:
         )
 
         try:
-            with request.urlopen(req, timeout=self.timeout) as response:
+            with request.urlopen(req, timeout=self.timeout) as response:  # nosec B310
                 body = response.read().decode("utf-8")
+
         except error.URLError as exc:
             raise OllamaError(
                 "Local AI model is not reachable. Start Ollama and run: ollama run llama3"
             ) from exc
+
         except TimeoutError as exc:
-            raise OllamaError("Local AI model timed out. Try a smaller model such as mistral.") from exc
+            raise OllamaError(
+                "Local AI model timed out. Try a smaller model such as mistral."
+            ) from exc
 
         try:
             parsed: dict[str, Any] = json.loads(body)
+
         except json.JSONDecodeError as exc:
-            raise OllamaError("Ollama returned an invalid response envelope.") from exc
+            raise OllamaError(
+                "Ollama returned an invalid response envelope."
+            ) from exc
 
         generated_text = parsed.get("response")
+
         if not generated_text:
-            raise OllamaError("Ollama response did not include generated text.")
+            raise OllamaError(
+                "Ollama response did not include generated text."
+            )
 
         return generated_text

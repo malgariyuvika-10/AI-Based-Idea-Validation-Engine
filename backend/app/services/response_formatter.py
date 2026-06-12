@@ -19,12 +19,14 @@ class ResponseFormatter:
         if missing:
             raise ValueError(f"AI response missing required keys: {', '.join(sorted(missing))}")
 
-        score = data.get("idea_score")
-        try:
-            data["idea_score"] = max(0, min(100, int(score)))
-        except (TypeError, ValueError):
-            data["idea_score"] = 0
+            score = data.get("idea_score", 0)
 
+            try:
+               safe_score = int(score) if score is not None else 0
+               data["idea_score"] = max(0, min(100, safe_score))
+            except (TypeError, ValueError):
+               data["idea_score"] = 0
+               
         for key in ["strengths", "weaknesses", "suggestions"]:
             value = data.get(key)
             if isinstance(value, str):

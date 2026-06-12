@@ -37,12 +37,13 @@ def validate_idea_by_id(idea_id: int):
 
     # Convert model to schema-like object for validation service
     idea_data = IdeaRequest(
-        title=idea.title,
-        description=idea.description,
-        target_audience=idea.target_audience,
-        industry=idea.industry,
-        revenue_model=idea.revenue_model
+    title=str(idea.title),
+    description=str(idea.description),
+    target_audience=str(idea.target_audience),
+    industry=str(idea.industry),
+    revenue_model=str(idea.revenue_model)
     )
+
 
     result = ValidationService().validate(idea_data)
     return result

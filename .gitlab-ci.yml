@@ -1,0 +1,30 @@
+image: python:3.11
+
+stages:
+  - lint
+  - security
+  - test
+
+before_script:
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+
+lint:
+  stage: lint
+  script:
+    - ruff check .
+    - mypy .
+    - pylint .
+    - flake8 .
+    - vulture .
+
+security:
+  stage: security
+  script:
+    - bandit -r .
+    - semgrep scan --config auto
+
+test:
+  stage: test
+  script:
+    - pytest --cov=.
