@@ -1,6 +1,8 @@
+import MainLayout from "../layouts/MainLayout";
+
 const About = () => {
   return (
-    <div className="p-6">
+    <MainLayout>
       <h1 className="text-3xl font-bold">
         About
       </h1>
@@ -8,7 +10,7 @@ const About = () => {
       <p className="mt-4">
         AI-powered startup idea validation platform.
       </p>
-    </div>
+    </MainLayout>
   );
 };
 
