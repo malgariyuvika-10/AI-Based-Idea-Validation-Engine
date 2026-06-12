@@ -1,11 +1,14 @@
 import AppRoutes from "./routes/AppRoutes";
 import { IdeaProvider } from "./context/IdeaContext";
+import { LanguageProvider } from "./context/LanguageContext";
 
 function App() {
   return (
-    <IdeaProvider>
-      <AppRoutes />
-    </IdeaProvider>
+    <LanguageProvider>
+      <IdeaProvider>
+        <AppRoutes />
+      </IdeaProvider>
+    </LanguageProvider>
   );
 }
 

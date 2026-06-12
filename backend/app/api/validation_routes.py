@@ -1,10 +1,23 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.idea_schema import IdeaRequest
+from app.schemas.validation_schema import LocalIdeaValidationRequest
+from app.services.local_ai_validation_service import LocalAIValidationService
+from app.services.ollama_service import OllamaError
 from app.services.validation_service import ValidationService
 from app.database.session import SessionLocal
 from app.models.idea_model import Idea
 
 router = APIRouter()
+
+
+@router.post("/validate-idea")
+def validate_idea_local(payload: LocalIdeaValidationRequest):
+    try:
+        return LocalAIValidationService().validate(payload)
+    except OllamaError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
 @router.post("/validate")
