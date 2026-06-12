@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.idea_routes import router as idea_router
 from app.api.validation_routes import router as validation_router
@@ -12,6 +13,15 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="AI Idea Validation Engine",
     version="1.0.0"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For development, allow all. In production, specify your frontend URL.
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(

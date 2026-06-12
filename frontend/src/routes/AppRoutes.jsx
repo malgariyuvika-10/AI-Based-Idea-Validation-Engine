@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
-import Home from "../pages/Home";
-import SubmitIdea from "../pages/SubmitIdea";
-import Dashboard from "../pages/Dashboard";
-import Results from "../pages/Results";
-import Reports from "../pages/Reports";
-import About from "../pages/About";
-import NotFound from "../pages/NotFound";
+import Home from "../Pages/Home";
+import SubmitIdea from "../Pages/SubmitIdea";
+import Dashboard from "../Pages/Dashboard";
+import Results from "../Pages/Results";
+import Reports from "../Pages/Reports";
+import About from "../Pages/About";
+import NotFound from "../Pages/NotFound";
 
 function AppRoutes() {
   return (
