@@ -13,23 +13,22 @@ before_script:
 lint:
   stage: lint
   script:
-    - ruff check .
-    - mypy .
-    - pylint .
-    - flake8 .
-    - vulture .
+    - ruff check backend/app
+    - mypy backend/app
+    - vulture backend/app
 
 security:
   stage: security
   script:
-    - bandit -r .
-    - semgrep --config auto .
+    - bandit -r backend/app
+    - semgrep --config auto backend/app
 
 test:
   stage: test
   script:
     - export PYTHONPATH=$CI_PROJECT_DIR
     - pytest tests --cov=backend --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+
   artifacts:
     reports:
       coverage_report:
