@@ -46,6 +46,11 @@ const Results = () => {
                 <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full">{idea.industry}</span>
                 <span className="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full">{idea.revenue_model}</span>
                 <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">{idea.target_audience}</span>
+                {idea.provider && (
+                  <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full">
+                    AI: {idea.provider === "local" ? "Local (Ollama)" : "Cloud (Gemini)"}
+                  </span>
+                )}
                 {idea.language && (
                   <span className="bg-purple-50 text-purple-700 px-3 py-1 rounded-full">
                     {t.common.language}: {idea.language.name}{idea.language.is_mixed ? ` ${t.common.mixed}` : ""}

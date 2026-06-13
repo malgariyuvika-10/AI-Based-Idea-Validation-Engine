@@ -62,12 +62,21 @@ const en = {
       Other: "Other",
     },
     revenueModels: {
-      "One-time Purchase": "One-time Purchase",
-      "Marketplace Commission": "Marketplace Commission",
-      Advertising: "Advertising",
-      Services: "Services",
+    "One-time Purchase": "One-time Purchase",
+    "Marketplace Commission": "Marketplace Commission",
+    Advertising: "Advertising",
+    Services: "Services",
     },
-  },
+    aiSettings: {
+    title: "AI Validation Settings",
+    provider: "AI Provider",
+    local: "Local AI (Ollama)",
+    cloud: "Cloud AI (Gemini)",
+    apiKey: "Bring Your Own Token (API Key)",
+    apiKeyPlaceholder: "Enter your Gemini API key (optional if server set)...",
+    },
+    },
+
   dashboard: {
     title: "Idea Dashboard",
     currentIdea: "Current idea: {{title}}",

@@ -13,6 +13,7 @@ class Idea(Base):
     target_audience = Column(String)
     industry = Column(String)
     revenue_model = Column(String)
+    provider = Column(String, default="local")
 
     # Validation Results
     market_score = Column(Integer, default=0)
