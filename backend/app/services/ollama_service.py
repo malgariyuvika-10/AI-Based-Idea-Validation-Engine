@@ -39,9 +39,7 @@ class OllamaService:
             response = requests.post(
                 api_url,
                 json=payload,
-                headers={
-                    "Content-Type": "application/json; charset=utf-8"
-                },
+                headers={"Content-Type": "application/json; charset=utf-8"},
                 timeout=self.timeout,
             )
 
@@ -60,23 +58,17 @@ class OllamaService:
             ) from exc
 
         except requests.exceptions.RequestException as exc:
-            raise OllamaError(
-                f"Ollama request failed: {exc}"
-            ) from exc
+            raise OllamaError(f"Ollama request failed: {exc}") from exc
 
         try:
             parsed: dict[str, Any] = json.loads(body)
 
         except json.JSONDecodeError as exc:
-            raise OllamaError(
-                "Ollama returned an invalid response envelope."
-            ) from exc
+            raise OllamaError("Ollama returned an invalid response envelope.") from exc
 
         generated_text = parsed.get("response")
 
         if not generated_text:
-            raise OllamaError(
-                "Ollama response did not include generated text."
-            )
+            raise OllamaError("Ollama response did not include generated text.")
 
         return generated_text
