@@ -1,6 +1,9 @@
 
 image: python:3.11
 
+include:
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+
 stages:
   - format
   - lint
@@ -22,17 +25,17 @@ before_script:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
 
-# -------------------------------
+# -----------------------------------
 # FORMAT STAGE
-# -------------------------------
+# -----------------------------------
 format:
   stage: format
   script:
     - ruff format --check backend tests
 
-# -------------------------------
+# -----------------------------------
 # LINT STAGE
-# -------------------------------
+# -----------------------------------
 lint:
   stage: lint
   script:
@@ -41,17 +44,17 @@ lint:
     - pylint backend/app
     - vulture backend/app
 
-# -------------------------------
+# -----------------------------------
 # TYPE CHECK STAGE
-# -------------------------------
+# -----------------------------------
 type_check:
   stage: type_check
   script:
     - mypy backend/app
 
-# -------------------------------
+# -----------------------------------
 # SECURITY STAGE
-# -------------------------------
+# -----------------------------------
 security:
   stage: security
   script:
@@ -59,17 +62,17 @@ security:
     - semgrep --config auto backend/app
     - pip-audit
 
-# -------------------------------
+# -----------------------------------
 # TEST STAGE
-# -------------------------------
+# -----------------------------------
 test:
   stage: test
   script:
     - pytest tests
 
-# -------------------------------
+# -----------------------------------
 # COVERAGE STAGE
-# -------------------------------
+# -----------------------------------
 coverage:
   stage: coverage
   script:
