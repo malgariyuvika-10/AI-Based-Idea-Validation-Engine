@@ -24,9 +24,7 @@ class LocalAIValidationService:
 
         prompt = self._build_prompt(payload, language)
         raw_response = self.ollama.generate(prompt)
-        formatted = self.formatter.parse_validation_response(
-            raw_response
-        )
+        formatted = self.formatter.parse_validation_response(raw_response)
 
         result = {
             "language": {
@@ -45,13 +43,9 @@ class LocalAIValidationService:
         context = {
             "idea": payload.idea,
             "title": payload.title or "Not provided",
-            "target_audience": (
-                payload.target_audience or "Not provided"
-            ),
+            "target_audience": (payload.target_audience or "Not provided"),
             "industry": payload.industry or "Not provided",
-            "revenue_model": (
-                payload.revenue_model or "Not provided"
-            ),
+            "revenue_model": (payload.revenue_model or "Not provided"),
         }
 
         return f"""
@@ -97,10 +91,6 @@ Use exactly this schema:
         idea_text: str,
         language_code: str,
     ) -> str:
-        normalized = " ".join(
-            idea_text.lower().split()
-        )
+        normalized = " ".join(idea_text.lower().split())
 
-        return hashlib.sha256(
-            f"{language_code}:{normalized}".encode()
-        ).hexdigest()
+        return hashlib.sha256(f"{language_code}:{normalized}".encode()).hexdigest()
