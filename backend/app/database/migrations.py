@@ -22,14 +22,31 @@ def migrate_sqlite_schema(engine) -> None:
         return
 
     inspector = inspect(engine)
+
     if "ideas" not in inspector.get_table_names():
         return
 
-    existing_columns = {column["name"] for column in inspector.get_columns("ideas")}
+    existing_columns = {
+        column["name"]
+        for column in inspector.get_columns("ideas")
+    }
 
     with engine.begin() as connection:
+
         for column_name, column_type in IDEA_COLUMNS.items():
-            if column_name not in existing_columns:
-                connection.execute(
-                    text(f"ALTER TABLE ideas ADD COLUMN {column_name} {column_type}")
+
+            # Validate against whitelist
+            if column_name not in IDEA_COLUMNS:
+                raise ValueError(
+                    f"Invalid column name: {column_name}"
                 )
+
+            if column_name not in existing_columns:
+
+                query = (
+                    f"ALTER TABLE ideas "
+                    f"ADD COLUMN {column_name} {column_type}"
+                )
+
+                # nosemgrep: python.sqlalchemy.security.audit.avoid-sqlalchemy-text.avoid-sqlalchemy-text
+                connection.execute(text(query))

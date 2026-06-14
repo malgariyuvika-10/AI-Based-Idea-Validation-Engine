@@ -8,3 +8,4 @@ semgrep
 pip-audit
 pytest
 pytest-cov
+types-requests
