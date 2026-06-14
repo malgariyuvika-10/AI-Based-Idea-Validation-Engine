@@ -7,7 +7,6 @@ from app.api.report_routes import router as report_router
 from app.database.database import engine
 from app.database.database import Base
 from app.database.migrations import migrate_sqlite_schema
-from app.models.idea_model import Idea
 
 Base.metadata.create_all(bind=engine)
 migrate_sqlite_schema(engine)

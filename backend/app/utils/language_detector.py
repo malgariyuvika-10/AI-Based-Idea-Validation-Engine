@@ -62,7 +62,7 @@ class LanguageDetector:
             code: len(pattern.findall(cleaned))
             for code, pattern in self._SCRIPT_RANGES.items()
         }
-        dominant_code = max(script_counts, key=script_counts.get)
+        dominant_code = max(script_counts, key=lambda x: script_counts[x])
         if script_counts[dominant_code] > 0:
             ascii_letters = len(re.findall(r"[A-Za-z]", cleaned))
             is_mixed = ascii_letters > 0 and script_counts[dominant_code] > 0
@@ -73,7 +73,7 @@ class LanguageDetector:
             code: sum(1 for hint in hints if f" {hint} " in lowered)
             for code, hints in self._ROMAN_HINTS.items()
         }
-        hinted_code = max(hint_scores, key=hint_scores.get)
+        hinted_code = max(hint_scores, key=lambda x: hint_scores[x])
         if hint_scores[hinted_code] > 0:
             return self._result(hinted_code, True)
 

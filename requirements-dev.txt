@@ -1,0 +1,11 @@
+ruff
+mypy
+vulture
+bandit
+pylint
+flake8
+semgrep
+pyupgrade
+pytest
+pytest-cov
+pre-commit

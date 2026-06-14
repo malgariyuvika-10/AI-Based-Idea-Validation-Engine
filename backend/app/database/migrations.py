@@ -9,6 +9,7 @@ IDEA_COLUMNS = {
     "risk_score": "INTEGER DEFAULT 0",
     "risk_summary": "TEXT",
     "overall_score": "FLOAT DEFAULT 0.0",
+    "provider": "VARCHAR DEFAULT 'local'",
     "recommendation": "VARCHAR",
     "strengths": "TEXT",
     "weaknesses": "TEXT",

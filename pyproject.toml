@@ -1,0 +1,17 @@
+[tool.ruff]
+line-length = 88
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+exclude = ["venv"]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.pylint]
+max-line-length = 88
+disable = ["C0114", "C0115", "C0116"]
+
+[tool.vulture]
+min_confidence = 60
