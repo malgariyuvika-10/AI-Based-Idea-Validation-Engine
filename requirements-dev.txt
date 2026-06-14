@@ -1,13 +1,10 @@
 ruff
+flake8
+pylint
 mypy
 vulture
 bandit
-pylint
-flake8
 semgrep
-pyupgrade
+pip-audit
 pytest
 pytest-cov
-pre-commit
-pylint
-flake8

@@ -1,36 +1,93 @@
+
 image: python:3.11
 
 stages:
+  - format
   - lint
+  - type_check
   - security
   - test
+  - coverage
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PYTHONPATH: "$CI_PROJECT_DIR"
+
+cache:
+  paths:
+    - .cache/pip
 
 before_script:
   - python -m pip install --upgrade pip
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
 
+# -------------------------------
+# FORMAT STAGE
+# -------------------------------
+format:
+  stage: format
+  script:
+    - ruff format --check backend tests
+
+# -------------------------------
+# LINT STAGE
+# -------------------------------
 lint:
   stage: lint
   script:
-    - ruff check backend/app
-    - mypy backend/app
+    - ruff check backend tests
+    - flake8 backend tests
+    - pylint backend/app
     - vulture backend/app
 
+# -------------------------------
+# TYPE CHECK STAGE
+# -------------------------------
+type_check:
+  stage: type_check
+  script:
+    - mypy backend/app
+
+# -------------------------------
+# SECURITY STAGE
+# -------------------------------
 security:
   stage: security
   script:
     - bandit -r backend/app
     - semgrep --config auto backend/app
+    - pip-audit
 
+# -------------------------------
+# TEST STAGE
+# -------------------------------
 test:
   stage: test
   script:
-    - export PYTHONPATH=$CI_PROJECT_DIR
-    - pytest tests --cov=backend --cov-report=term-missing --cov-report=xml --cov-fail-under=0
+    - pytest tests
+
+# -------------------------------
+# COVERAGE STAGE
+# -------------------------------
+coverage:
+  stage: coverage
+  script:
+    - pytest tests \
+      --cov=backend \
+      --cov-report=term-missing \
+      --cov-report=xml \
+      --cov-fail-under=80
+
+  coverage: '/TOTAL.+?(\d+\%)$/'
 
   artifacts:
     reports:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+
+    paths:
+      - coverage.xml
+
+    expire_in: 1 week
