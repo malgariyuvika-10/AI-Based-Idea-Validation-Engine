@@ -3,12 +3,15 @@ import json
 import google.generativeai as genai
 from typing import Any, Optional
 
+
 class GeminiService:
     def __init__(self, api_key: Optional[str] = None) -> None:
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
         if not self.api_key:
-            raise ValueError("Gemini API key is required. Provide it in .env or via BYOK.")
-        
+            raise ValueError(
+                "Gemini API key is required. Provide it in .env or via BYOK."
+            )
+
         genai.configure(api_key=self.api_key)
         self.model_name = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
         self.model = genai.GenerativeModel(self.model_name)
@@ -20,7 +23,7 @@ class GeminiService:
                 generation_config=genai.types.GenerationConfig(
                     temperature=0.2,
                     response_mime_type="application/json",
-                )
+                ),
             )
             return response.text
         except Exception as e:
@@ -40,11 +43,11 @@ class GeminiService:
         You are an expert startup idea validation consultant.
         Validate the following startup idea:
         
-        Title: {idea_data.get('title')}
-        Description: {idea_data.get('description')}
-        Target Audience: {idea_data.get('target_audience')}
-        Industry: {idea_data.get('industry')}
-        Revenue Model: {idea_data.get('revenue_model')}
+        Title: {idea_data.get("title")}
+        Description: {idea_data.get("description")}
+        Target Audience: {idea_data.get("target_audience")}
+        Industry: {idea_data.get("industry")}
+        Revenue Model: {idea_data.get("revenue_model")}
         
         Return a comprehensive validation report in JSON format with the following structure:
         {{

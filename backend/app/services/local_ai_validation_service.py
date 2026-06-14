@@ -78,4 +78,6 @@ Use exactly this schema:
 
     def _cache_key(self, idea_text: str, language_code: str) -> str:
         normalized = " ".join(idea_text.lower().split())
-        return hashlib.sha256(f"{language_code}:{normalized}".encode("utf-8")).hexdigest()
+        return hashlib.sha256(
+            f"{language_code}:{normalized}".encode()
+        ).hexdigest()

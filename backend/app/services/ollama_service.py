@@ -59,15 +59,11 @@ class OllamaService:
             parsed: dict[str, Any] = json.loads(body)
 
         except json.JSONDecodeError as exc:
-            raise OllamaError(
-                "Ollama returned an invalid response envelope."
-            ) from exc
+            raise OllamaError("Ollama returned an invalid response envelope.") from exc
 
         generated_text = parsed.get("response")
 
         if not generated_text:
-            raise OllamaError(
-                "Ollama response did not include generated text."
-            )
+            raise OllamaError("Ollama response did not include generated text.")
 
         return generated_text
