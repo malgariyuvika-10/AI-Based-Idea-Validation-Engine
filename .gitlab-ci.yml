@@ -41,8 +41,9 @@ lint:
   script:
     - ruff check backend tests
     - flake8 backend tests
-    - pylint backend/app
-    - vulture backend/app
+    - pylint backend/app --fail-under=7
+    - mypy backend/app
+    - vulture backend/app --min-confidence 80
 
 # -----------------------------------
 # TYPE CHECK STAGE
