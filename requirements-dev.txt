@@ -9,3 +9,5 @@ pyupgrade
 pytest
 pytest-cov
 pre-commit
+pylint
+flake8
