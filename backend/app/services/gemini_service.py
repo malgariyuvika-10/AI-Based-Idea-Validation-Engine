@@ -42,13 +42,11 @@ class GeminiService:
         return f"""
         You are an expert startup idea validation consultant.
         Validate the following startup idea:
-        
         Title: {idea_data.get("title")}
         Description: {idea_data.get("description")}
         Target Audience: {idea_data.get("target_audience")}
         Industry: {idea_data.get("industry")}
         Revenue Model: {idea_data.get("revenue_model")}
-        
         Return a comprehensive validation report in JSON format with the following structure:
         {{
           "overall_score": 0-100,

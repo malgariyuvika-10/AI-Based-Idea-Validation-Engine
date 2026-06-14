@@ -24,7 +24,9 @@ class LocalAIValidationService:
 
         prompt = self._build_prompt(payload, language)
         raw_response = self.ollama.generate(prompt)
-        formatted = self.formatter.parse_validation_response(raw_response)
+        formatted = self.formatter.parse_validation_response(
+            raw_response
+        )
 
         result = {
             "language": {
@@ -35,6 +37,7 @@ class LocalAIValidationService:
             "raw_model": self.ollama.model,
             **formatted,
         }
+
         self._cache[cache_key] = result
         return result
 
@@ -42,20 +45,31 @@ class LocalAIValidationService:
         context = {
             "idea": payload.idea,
             "title": payload.title or "Not provided",
-            "target_audience": payload.target_audience or "Not provided",
+            "target_audience": (
+                payload.target_audience or "Not provided"
+            ),
             "industry": payload.industry or "Not provided",
-            "revenue_model": payload.revenue_model or "Not provided",
+            "revenue_model": (
+                payload.revenue_model or "Not provided"
+            ),
         }
 
         return f"""
-You are an offline AI startup idea validation expert running locally through Ollama.
+You are an offline AI startup idea validation expert
+running locally through Ollama.
 
 Detected language: {language.name}
 Mixed language input: {"yes" if language.is_mixed else "no"}
 Response rule: {language.response_instruction}
 
-Validate the startup idea below. Keep the tone natural, practical, and conversational.
-If input is mixed language such as Hinglish or Tanglish, understand the mixed input but answer in the detected Indian language when possible.
+Validate the startup idea below.
+Keep the tone natural, practical,
+and conversational.
+
+If input is mixed language such as Hinglish
+or Tanglish, understand the mixed input
+but answer in the detected Indian language
+when possible.
 
 Idea details:
 - Title: {context["title"]}
@@ -64,7 +78,9 @@ Idea details:
 - Industry: {context["industry"]}
 - Revenue model: {context["revenue_model"]}
 
-Return only valid JSON. Do not include markdown.
+Return only valid JSON.
+Do not include markdown.
+
 Use exactly this schema:
 {{
   "idea_score": 0,
@@ -76,6 +92,15 @@ Use exactly this schema:
 }}
 """.strip()
 
-    def _cache_key(self, idea_text: str, language_code: str) -> str:
-        normalized = " ".join(idea_text.lower().split())
-        return hashlib.sha256(f"{language_code}:{normalized}".encode()).hexdigest()
+    def _cache_key(
+        self,
+        idea_text: str,
+        language_code: str,
+    ) -> str:
+        normalized = " ".join(
+            idea_text.lower().split()
+        )
+
+        return hashlib.sha256(
+            f"{language_code}:{normalized}".encode()
+        ).hexdigest()

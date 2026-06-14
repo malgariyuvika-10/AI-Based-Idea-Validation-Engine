@@ -37,13 +37,11 @@ class ValidationService:
         return f"""
         You are an expert startup idea validation consultant.
         Validate the following startup idea:
-        
         Title: {idea_data.title}
         Description: {idea_data.description}
         Target Audience: {idea_data.target_audience}
         Industry: {idea_data.industry}
         Revenue Model: {idea_data.revenue_model}
-        
         Return a comprehensive validation report in JSON format with the following structure:
         {{
           "overall_score": 0-100,
