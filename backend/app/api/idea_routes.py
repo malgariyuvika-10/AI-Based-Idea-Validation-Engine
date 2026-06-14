@@ -39,7 +39,7 @@ def submit_idea(idea: IdeaRequest):
         feasibility_score=scores.get("feasibility", 0),
         risk_score=scores.get("risk", 0),
         strengths=json.dumps(swot.get("strengths", [])),
-        weaknesses=json.dumps(swot.get("weaknesses", []))
+        weaknesses=json.dumps(swot.get("weaknesses", [])),
     )
 
     db.add(new_idea)
@@ -65,7 +65,7 @@ def submit_idea(idea: IdeaRequest):
         "success_prediction": validation_result.get("success_prediction", {}),
         "ai_suggestions": validation_result.get("ai_suggestions", []),
         "pitch": validation_result.get("pitch", ""),
-        "overall_score": validation_result.get("overall_score", 0)
+        "overall_score": validation_result.get("overall_score", 0),
     }
 
 

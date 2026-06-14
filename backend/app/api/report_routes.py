@@ -11,13 +11,10 @@ router = APIRouter()
 @router.post("/report")
 def generate_report_direct(idea: IdeaRequest):
 
-    validation_result = (
-        ValidationService().validate(idea)
-    )
+    validation_result = ValidationService().validate(idea)
 
     report = ReportService().generate(
-        validation_result["analysis"],
-        validation_result["overall_score"]
+        validation_result["analysis"], validation_result["overall_score"]
     )
 
     return {
@@ -27,7 +24,7 @@ def generate_report_direct(idea: IdeaRequest):
         "competitors": validation_result["competitors"],
         "success_prediction": validation_result["success_prediction"],
         "ai_suggestions": validation_result["ai_suggestions"],
-        "pitch": validation_result["pitch"]
+        "pitch": validation_result["pitch"],
     }
 
 
@@ -41,11 +38,11 @@ def generate_report_by_id(idea_id: int):
         raise HTTPException(status_code=404, detail="Idea not found")
 
     idea_data = IdeaRequest(
-    title=str(idea.title),
-    description=str(idea.description),
-    target_audience=str(idea.target_audience),
-    industry=str(idea.industry),
-    revenue_model=str(idea.revenue_model)
+        title=str(idea.title),
+        description=str(idea.description),
+        target_audience=str(idea.target_audience),
+        industry=str(idea.industry),
+        revenue_model=str(idea.revenue_model),
     )
 
     return generate_report_direct(idea_data)
@@ -61,5 +58,5 @@ def get_reports():
 def download_report(report_id: str):
     return {
         "message": "Use the frontend PDF Report page to print or save the latest validation report as PDF.",
-        "report_id": report_id
+        "report_id": report_id,
     }

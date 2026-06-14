@@ -25,10 +25,7 @@ def migrate_sqlite_schema(engine) -> None:
     if "ideas" not in inspector.get_table_names():
         return
 
-    existing_columns = {
-        column["name"]
-        for column in inspector.get_columns("ideas")
-    }
+    existing_columns = {column["name"] for column in inspector.get_columns("ideas")}
 
     with engine.begin() as connection:
         for column_name, column_type in IDEA_COLUMNS.items():
