@@ -12,7 +12,46 @@ stages:
   - coverage
   - changelog
 
-# ... (cache and before_script)
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PYTHONPATH: "$CI_PROJECT_DIR"
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - python -m pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+
+# -----------------------------------
+# FORMAT STAGE
+# -----------------------------------
+format:
+  stage: format
+  script:
+    - ruff format --check backend tests
+
+# -----------------------------------
+# LINT STAGE
+# -----------------------------------
+lint:
+  stage: lint
+  script:
+    - ruff check backend tests
+    - flake8 backend tests
+    - pylint backend/app --fail-under=7
+    - mypy backend/app
+    - vulture backend/app --min-confidence 80
+
+# -----------------------------------
+# TYPE CHECK STAGE
+# -----------------------------------
+type_check:
+  stage: type_check
+  script:
+    - mypy backend/app
 
 # -----------------------------------
 # SECURITY STAGE
@@ -29,6 +68,7 @@ gitleaks:
   image:
     name: zricethezav/gitleaks
     entrypoint: [""]
+  before_script: [] # Override global before_script for gitleaks
   script:
     - gitleaks detect --verbose --source .
 
@@ -42,8 +82,6 @@ git-cliff:
   only:
     - main
     - tags
-
-
 
 # -----------------------------------
 # TEST STAGE
