@@ -1,6 +1,6 @@
-from app.agents.market_agent import MarketAgent
-from app.agents.feasibility_agent import FeasibilityAgent
-from app.agents.risk_agent import RiskAgent
+from backend.app.agents.market_agent import MarketAgent
+from backend.app.agents.feasibility_agent import FeasibilityAgent
+from backend.app.agents.risk_agent import RiskAgent
 
 
 class CoordinatorAgent:

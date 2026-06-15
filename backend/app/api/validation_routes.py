@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.idea_schema import IdeaRequest
-from app.schemas.validation_schema import LocalIdeaValidationRequest
-from app.services.local_ai_validation_service import LocalAIValidationService
-from app.services.ollama_service import OllamaError
-from app.services.validation_service import ValidationService
-from app.database.session import SessionLocal
-from app.models.idea_model import Idea
+from backend.app.schemas.idea_schema import IdeaRequest
+from backend.app.schemas.validation_schema import LocalIdeaValidationRequest
+from backend.app.services.local_ai_validation_service import LocalAIValidationService
+from backend.app.services.ollama_service import OllamaError
+from backend.app.services.validation_service import ValidationService
+from backend.app.database.session import SessionLocal
+from backend.app.models.idea_model import Idea
 
 router = APIRouter()
 

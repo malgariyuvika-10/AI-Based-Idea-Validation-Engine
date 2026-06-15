@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.idea_routes import router as idea_router
-from app.api.validation_routes import router as validation_router
-from app.api.report_routes import router as report_router
-from app.database.database import engine
-from app.database.database import Base
-from app.database.migrations import migrate_sqlite_schema
+from backend.app.api.idea_routes import router as idea_router
+from backend.app.api.validation_routes import router as validation_router
+from backend.app.api.report_routes import router as report_router
+
+from backend.app.database.database import engine, Base
+from backend.app.database.migrations import migrate_sqlite_schema
 
 Base.metadata.create_all(bind=engine)
 migrate_sqlite_schema(engine)

@@ -1,9 +1,9 @@
 import hashlib
 from typing import Any
 
-from app.services.ollama_service import OllamaService
-from app.services.response_formatter import ResponseFormatter
-from app.utils.language_detector import LanguageDetector
+from backend.app.services.ollama_service import OllamaService
+from backend.app.services.response_formatter import ResponseFormatter
+from backend.app.utils.language_detector import LanguageDetector
 
 
 class LocalAIValidationService:

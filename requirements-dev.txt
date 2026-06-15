@@ -9,3 +9,4 @@ pip-audit
 pytest
 pytest-cov
 types-requests
+git-cliff

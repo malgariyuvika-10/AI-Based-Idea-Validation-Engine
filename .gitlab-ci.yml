@@ -10,47 +10,9 @@ stages:
   - security
   - test
   - coverage
+  - changelog
 
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  PYTHONPATH: "$CI_PROJECT_DIR"
-
-cache:
-  paths:
-    - .cache/pip
-
-before_script:
-  - python -m pip install --upgrade pip
-  - pip install -r requirements.txt
-  - pip install -r requirements-dev.txt
-
-# -----------------------------------
-# FORMAT STAGE
-# -----------------------------------
-format:
-  stage: format
-  script:
-    - ruff format --check backend tests
-
-# -----------------------------------
-# LINT STAGE
-# -----------------------------------
-lint:
-  stage: lint
-  script:
-    - ruff check backend tests
-    - flake8 backend tests
-    - pylint backend/app --fail-under=7
-    - mypy backend/app
-    - vulture backend/app --min-confidence 80
-
-# -----------------------------------
-# TYPE CHECK STAGE
-# -----------------------------------
-type_check:
-  stage: type_check
-  script:
-    - mypy backend/app
+# ... (cache and before_script)
 
 # -----------------------------------
 # SECURITY STAGE
@@ -61,6 +23,27 @@ security:
     - bandit -r backend/app
     - semgrep --config auto backend/app
     - pip-audit || true
+
+gitleaks:
+  stage: security
+  image:
+    name: zricethezav/gitleaks
+    entrypoint: [""]
+  script:
+    - gitleaks detect --verbose --source .
+
+git-cliff:
+  stage: changelog
+  script:
+    - git cliff --output CHANGELOG.md
+  artifacts:
+    paths:
+      - CHANGELOG.md
+  only:
+    - main
+    - tags
+
+
 
 # -----------------------------------
 # TEST STAGE

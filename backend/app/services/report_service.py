@@ -1,4 +1,4 @@
-from app.agents.report_agent import ReportAgent
+from backend.app.agents.report_agent import ReportAgent
 
 
 class ReportService:

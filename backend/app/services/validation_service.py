@@ -1,6 +1,6 @@
-from app.services.gemini_service import GeminiService
-from app.services.ollama_service import OllamaService, OllamaError
-from app.services.response_formatter import ResponseFormatter
+from backend.app.services.gemini_service import GeminiService
+from backend.app.services.ollama_service import OllamaService, OllamaError
+from backend.app.services.response_formatter import ResponseFormatter
 
 
 class ValidationService:
