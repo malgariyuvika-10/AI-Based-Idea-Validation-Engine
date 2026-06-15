@@ -10,7 +10,7 @@ def test_validate_idea():
         "description": "AI platform for students",
         "target_audience": "College Students",
         "industry": "Education",
-        "revenue_model": "Subscription"
+        "revenue_model": "Subscription",
     }
 
     response = client.post("/api/validate", json=payload)
