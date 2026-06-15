@@ -1,10 +1,4 @@
-from fastapi.testclient import TestClient
-from backend.app.main import app
-
-client = TestClient(app)
-
-
-def test_validate_idea():
+def test_validate_idea(client):
     payload = {
         "title": "AI Startup",
         "description": "AI platform for students",
