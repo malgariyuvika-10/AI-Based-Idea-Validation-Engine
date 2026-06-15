@@ -1,3 +1,4 @@
-def test_basic_math():
+def test_smoke():
     result = 2 + 2
-    assert result == 4  # nosec B101
+    if result != 4:
+        raise AssertionError("Smoke test failed")
