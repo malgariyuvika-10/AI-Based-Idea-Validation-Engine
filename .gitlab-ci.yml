@@ -60,8 +60,6 @@ security:
   script:
     - bandit -r backend/app
     - semgrep --config auto backend/app
-
-    # FIX: prevents CI failure due to known CVEs vs dependency constraints
     - pip-audit || true
 
 # -----------------------------------
@@ -70,7 +68,7 @@ security:
 test:
   stage: test
   script:
-    - pytest tests
+    - pytest tests -q
 
 # -----------------------------------
 # COVERAGE STAGE
@@ -78,13 +76,7 @@ test:
 coverage:
   stage: coverage
   script:
-    - pytest tests \
-      --cov=backend \
-      --cov-report=term-missing \
-      --cov-report=xml \
-      --cov-fail-under=80
-
-  coverage: '/TOTAL.+?(\d+\%)$/'
+    - pytest tests --cov=backend --cov-report=term-missing --cov-report=xml --cov-fail-under=80
 
   artifacts:
     reports:
