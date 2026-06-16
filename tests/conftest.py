@@ -4,7 +4,7 @@ from backend.app.main import app
 from fastapi.testclient import TestClient
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def mock_validation_service():
     mock_response = {
         "overall_score": 85,

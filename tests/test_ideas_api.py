@@ -1,4 +1,4 @@
-def test_create_idea(client):
+def test_create_idea(client, mock_validation_service):
     payload = {
         "title": "AI Startup",
         "description": "A tool for idea validation",
