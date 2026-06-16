@@ -1,14 +1,27 @@
-```md id="ycj3zc"
 # Project Constitution
 
 ## Purpose
-The AI-Based Idea Validation Engine helps entrepreneurs validate startup ideas using AI-driven market, feasibility, and risk analysis.
+The AI-Based Idea Validation Engine helps founders validate startup ideas using AI-powered analysis.
 
 ## Principles
-- Maintain clean and modular architecture
-- Ensure secure API handling
-- Follow AGPLv3 compliance
-- Maintain test coverage above 80%
-- Use spec-driven development
-- Enforce CI/CD quality checks
-```
+
+### 1. Spec-Driven Development
+All major features must begin with documented specifications.
+
+### 2. Testing First
+Features should include automated tests.
+
+### 3. Security
+All code must pass security scans before merge.
+
+### 4. Documentation
+Every feature must include user-facing documentation.
+
+### 5. Quality Standards
+Code must pass:
+- Ruff
+- Flake8
+- Pylint
+- Mypy
+- Bandit
+- Vulture
