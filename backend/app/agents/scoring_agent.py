@@ -1,4 +1,4 @@
-from app.services.scoring_service import ScoringService
+from backend.app.services.scoring_service import ScoringService
 
 
 class ScoringAgent:

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Text
 
-from app.database.database import Base
+from backend.app.database.database import Base
 
 
 class Idea(Base):

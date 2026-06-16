@@ -1,6 +1,6 @@
-from app.services.gemini_service import GeminiService
-from app.services.ollama_service import OllamaService, OllamaError
-from app.services.response_formatter import ResponseFormatter
+from backend.app.services.gemini_service import GeminiService
+from backend.app.services.ollama_service import OllamaService, OllamaError
+from backend.app.services.response_formatter import ResponseFormatter
 
 
 class ValidationService:
@@ -37,13 +37,11 @@ class ValidationService:
         return f"""
         You are an expert startup idea validation consultant.
         Validate the following startup idea:
-        
         Title: {idea_data.title}
         Description: {idea_data.description}
         Target Audience: {idea_data.target_audience}
         Industry: {idea_data.industry}
         Revenue Model: {idea_data.revenue_model}
-        
         Return a comprehensive validation report in JSON format with the following structure:
         {{
           "overall_score": 0-100,

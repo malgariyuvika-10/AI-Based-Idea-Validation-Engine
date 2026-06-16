@@ -1,8 +1,9 @@
 import json
 import os
 from typing import Any
-from urllib import error, request
 from urllib.parse import urlparse
+
+import requests
 
 
 class OllamaError(RuntimeError):
@@ -27,33 +28,37 @@ class OllamaService:
             },
         }
 
-        data = json.dumps(payload).encode("utf-8")
-
         parsed_url = urlparse(self.base_url)
 
         if parsed_url.scheme not in ("http", "https"):
             raise ValueError("Only HTTP/HTTPS URLs are allowed")
 
-        req = request.Request(
-            f"{self.base_url}/api/generate",
-            data=data,
-            headers={"Content-Type": "application/json; charset=utf-8"},
-            method="POST",
-        )
+        api_url = f"{self.base_url}/api/generate"
 
         try:
-            with request.urlopen(req, timeout=self.timeout) as response:  # nosec B310
-                body = response.read().decode("utf-8")
+            response = requests.post(
+                api_url,
+                json=payload,
+                headers={"Content-Type": "application/json; charset=utf-8"},
+                timeout=self.timeout,
+            )
 
-        except error.URLError as exc:
+            response.raise_for_status()
+
+            body = response.text
+
+        except requests.exceptions.ConnectionError as exc:
             raise OllamaError(
                 "Local AI model is not reachable. Start Ollama and run: ollama run llama3"
             ) from exc
 
-        except TimeoutError as exc:
+        except requests.exceptions.Timeout as exc:
             raise OllamaError(
                 "Local AI model timed out. Try a smaller model such as mistral."
             ) from exc
+
+        except requests.exceptions.RequestException as exc:
+            raise OllamaError(f"Ollama request failed: {exc}") from exc
 
         try:
             parsed: dict[str, Any] = json.loads(body)

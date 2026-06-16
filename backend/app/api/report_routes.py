@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.idea_schema import IdeaRequest
-from app.services.validation_service import ValidationService
-from app.services.report_service import ReportService
-from app.database.session import SessionLocal
-from app.models.idea_model import Idea
+from backend.app.schemas.idea_schema import IdeaRequest
+from backend.app.services.validation_service import ValidationService
+from backend.app.services.report_service import ReportService
+from backend.app.database.session import SessionLocal
+from backend.app.models.idea_model import Idea
 
 router = APIRouter()
 
