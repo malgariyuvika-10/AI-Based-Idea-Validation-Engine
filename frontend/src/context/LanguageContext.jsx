@@ -51,7 +51,7 @@ const en = {
     validateNow: "Validate Now",
     success: "Idea submitted successfully!",
     failure: "Failed to validate idea.",
-    backendHint: "Make sure your backend server is running on port 5000.",
+    backendHint: "Unable to connect to backend. Please try again later.",
     industries: {
       Technology: "Technology",
       Healthcare: "Healthcare",
