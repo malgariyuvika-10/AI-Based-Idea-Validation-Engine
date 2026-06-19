@@ -197,7 +197,7 @@ const translations = {
       validateNow: "अभी जांचें",
       success: "आइडिया सफलतापूर्वक सबमिट हुआ!",
       failure: "आइडिया वैलिडेट नहीं हो सका।",
-      backendHint: "सुनिश्चित करें कि बैकएंड सर्वर पोर्ट 5000 पर चल रहा है।",
+      backendHint: "सुनिश्चित करें कि डिप्लॉय किया गया बैकएंड https://ai-based-idea-validation-engine.onrender.com पर चल रहा है।",
       industries: {
         Technology: "टेक्नोलॉजी",
         Healthcare: "हेल्थकेयर",
@@ -333,7 +333,7 @@ const translations = {
       validateNow: "ఇప్పుడే ధృవీకరించండి",
       success: "ఆలోచన విజయవంతంగా సమర్పించబడింది!",
       failure: "ఆలోచనను ధృవీకరించలేకపోయాం.",
-      backendHint: "మీ బ్యాకెండ్ సర్వర్ పోర్ట్ 5000లో నడుస్తోందని నిర్ధారించుకోండి.",
+      backendHint: "డిప్లాయ్ చేసిన బ్యాకెండ్ https://ai-based-idea-validation-engine.onrender.com వద్ద నడుస్తోందని నిర్ధారించుకోండి.",
       industries: {
         Technology: "టెక్నాలజీ",
         Healthcare: "హెల్త్‌కేర్",
@@ -469,7 +469,7 @@ const translations = {
       validateNow: "ಈಗ ಪರಿಶೀಲಿಸಿ",
       success: "ಐಡಿಯಾ ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!",
       failure: "ಐಡಿಯಾವನ್ನು ಪರಿಶೀಲಿಸಲು ವಿಫಲವಾಗಿದೆ.",
-      backendHint: "ನಿಮ್ಮ ಬ್ಯಾಕೆಂಡ್ ಸರ್ವರ್ ಪೋರ್ಟ್ 5000ರಲ್ಲಿ ಚಾಲನೆಯಲ್ಲಿದೆ ಎಂದು ಖಚಿತಪಡಿಸಿ.",
+      backendHint: "ಡಿಪ್ಲಾಯ್ ಮಾಡಿದ ಬ್ಯಾಕೆಂಡ್ https://ai-based-idea-validation-engine.onrender.com ನಲ್ಲಿ ಚಾಲನೆಯಲ್ಲಿದೆ ಎಂದು ಖಚಿತಪಡಿಸಿ.",
       industries: {
         Technology: "ಟೆಕ್ನಾಲಜಿ",
         Healthcare: "ಹೆಲ್ತ್‌ಕೇರ್",
